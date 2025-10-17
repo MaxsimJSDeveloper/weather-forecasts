@@ -1,47 +1,26 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { onMounted } from 'vue'
+import { useWeather } from './composables/useWeather'
+import WeatherInfo from './components/WeatherInfo.vue'
+
+const { weatherData, loading, error, getWeather } = useWeather()
+
+onMounted(() => {
+  getWeather('Kyiv')
+})
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
   <main>
-    <TheWelcome />
+    <div v-if="loading">
+      <h1>Loading...</h1>
+    </div>
+
+    <div v-else-if="error">
+      <h1>Error</h1>
+      <p>{{ error }}</p>
+    </div>
+
+    <WeatherInfo v-else-if="weatherData" :weatherData="weatherData" />
   </main>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
