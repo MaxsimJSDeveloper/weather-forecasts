@@ -8,6 +8,10 @@ export function useWeather() {
   const error = ref<string | null>(null)
 
   async function getWeather(city: string) {
+    if (!city.trim()) {
+      return
+    }
+
     loading.value = true
     error.value = null
     weatherData.value = null
@@ -18,7 +22,7 @@ export function useWeather() {
       if (err instanceof Error) {
         error.value = err.message
       } else {
-        error.value = 'Произошла неизвестная ошибка.'
+        error.value = 'Unknown error occurred'
       }
       console.error(err)
     } finally {

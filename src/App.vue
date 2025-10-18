@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useWeather } from './composables/useWeather'
-import WeatherInfo from './components/WeatherInfo.vue'
+import WeatherForecast from './components/WeatherForecast.vue'
 
 const { weatherData, loading, error, getWeather } = useWeather()
 
@@ -21,6 +21,6 @@ onMounted(() => {
       <p>{{ error }}</p>
     </div>
 
-    <WeatherInfo v-else-if="weatherData" :weatherData="weatherData" />
+    <WeatherForecast v-else-if="weatherData" :getWeather="getWeather" :weatherData="weatherData" />
   </main>
 </template>
