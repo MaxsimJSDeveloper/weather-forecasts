@@ -6,6 +6,7 @@ export function useWeather() {
   const weatherData = ref<WeatherData | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
+  const notFound = ref(false)
 
   async function getWeather(city: string) {
     if (!city.trim()) {
@@ -15,8 +16,14 @@ export function useWeather() {
     loading.value = true
     error.value = null
     weatherData.value = null
+    notFound.value = false
+
     try {
       const data = await fetchWeather(city)
+      if (data.status === '404' || data.message?.includes('not found')) {
+        notFound.value = true
+        return
+      }
       weatherData.value = data
     } catch (err) {
       if (err instanceof Error) {
@@ -30,5 +37,5 @@ export function useWeather() {
     }
   }
 
-  return { weatherData, loading, error, getWeather }
+  return { weatherData, loading, error, notFound, getWeather }
 }

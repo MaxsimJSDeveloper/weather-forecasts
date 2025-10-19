@@ -21,4 +21,6 @@ export interface WeatherData {
     degree: number
   }
   time: number
+  message?: string
+  status?: string
 }

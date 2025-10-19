@@ -15,6 +15,7 @@ const city = ref('')
       class="search-input"
       v-model="city"
       placeholder="Enter city name"
+      @input="city = city.replace(/[0-9]/g, '')"
       @keyup.enter="getWeather(city)"
     />
     <button class="search-button" @click="getWeather(city)">Search</button>
@@ -25,11 +26,11 @@ const city = ref('')
 .search-container {
   display: flex;
   margin-bottom: 2rem;
-  gap: 0.5rem; /* Расстояние между инпутом и кнопкой */
+  gap: 0.5rem;
 }
 
 .search-input {
-  flex-grow: 1; /* Инпут займет все доступное пространство */
+  flex-grow: 1;
   padding: 0.75rem 1rem;
   font-size: 1rem;
   border: 1px solid var(--border-color);
