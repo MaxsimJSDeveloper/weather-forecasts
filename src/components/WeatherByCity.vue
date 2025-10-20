@@ -32,7 +32,7 @@ const city = ref('')
 .search-input {
   flex-grow: 1;
   padding: 0.75rem 1rem;
-  font-size: 1rem;
+
   border: 1px solid var(--border-color);
   border-radius: 8px;
   transition:
@@ -51,10 +51,9 @@ const city = ref('')
   font-size: 1rem;
   font-weight: 500;
   background-color: var(--accent-color);
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
   transition: background-color 0.3s;
 }
 

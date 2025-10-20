@@ -19,6 +19,9 @@ body {
   align-items: flex-start;
   min-height: 100vh;
   padding-top: 50px;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
 }
 
 #app {
@@ -30,6 +33,39 @@ body {
   box-shadow: 0 10px 25px var(--shadow-color);
 }
 
-h1 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin-top: 0;
+  margin-bottom: 0;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul,
+ol {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+nav {
+  padding: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }

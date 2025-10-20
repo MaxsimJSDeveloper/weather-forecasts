@@ -15,9 +15,8 @@ defineProps<{
     <p class="condition-description">{{ weatherData.condition.description }}</p>
 
     <div class="details">
-      <p>
-        Feels like: <strong>{{ Math.round(weatherData.temperature.feels_like) }}°C</strong>
-      </p>
+      Feels like:
+      <p class="details-wrap">{{ Math.round(weatherData.temperature.feels_like) }}°C</p>
     </div>
   </div>
 </template>
@@ -43,7 +42,7 @@ defineProps<{
 .condition-description {
   font-size: 1.25rem;
   color: var(--secondary-text-color);
-  text-transform: capitalize; 
+  text-transform: capitalize;
   margin-top: -0.5rem;
 }
 
@@ -53,7 +52,7 @@ defineProps<{
   color: var(--secondary-text-color);
 }
 
-.details strong {
+.details-wrap {
   color: var(--primary-text-color);
 }
 </style>
