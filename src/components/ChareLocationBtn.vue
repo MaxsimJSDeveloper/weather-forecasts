@@ -1,29 +1,12 @@
 <script setup lang="ts">
-import { getCityByLocation } from '@/utils/getCityByLocation'
-import { getCoordinates } from '@/utils/getCoordinats'
-
-const { getWeather } = defineProps<{
-  getWeather: (city: string) => Promise<void>
+const { getWeatherByLocation } = defineProps<{
+  getWeatherByLocation: () => void
 }>()
-
-async function detectLocation() {
-  try {
-    const coords = await getCoordinates()
-    if (!coords) throw new Error('Geolocation unavailable')
-
-    const city = await getCityByLocation(coords.lat, coords.lon)
-    if (!city) throw new Error('Cannot find city')
-
-    await getWeather(city)
-  } catch (err) {
-    console.error(err)
-  }
-}
 </script>
 
 <template>
   <div class="search-button-wrap">
-    <button class="search-button" @click="detectLocation">🌍 Use my location</button>
+    <button class="search-button" @click="getWeatherByLocation">🌍 Use my location</button>
   </div>
 </template>
 

@@ -4,7 +4,7 @@ import { useWeather } from './composables/useWeather'
 import WeatherForecast from './components/WeatherForecast.vue'
 import WeatherNotFound from './components/WeatherNotFound.vue'
 
-const { weatherData, loading, error, notFound, getWeather } = useWeather()
+const { weatherData, loading, error, notFound, getWeather, getWeatherByLocation } = useWeather()
 
 onMounted(() => {
   getWeather('Kyiv')
@@ -22,6 +22,11 @@ onMounted(() => {
       <p>{{ error }}</p>
     </div>
     <WeatherNotFound v-else-if="notFound" @try-again="getWeather('Kyiv')" />
-    <WeatherForecast v-else-if="weatherData" :getWeather="getWeather" :weatherData="weatherData" />
+    <WeatherForecast
+      v-else-if="weatherData"
+      :getWeather="getWeather"
+      :weatherData="weatherData"
+      :getWeatherByLocation="getWeatherByLocation"
+    />
   </main>
 </template>

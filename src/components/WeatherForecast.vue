@@ -7,6 +7,7 @@ import ChareLocationBtn from './ChareLocationBtn.vue'
 defineProps<{
   getWeather: (city: string) => Promise<void>
   weatherData: WeatherData
+  getWeatherByLocation: () => Promise<void>
 }>()
 </script>
 
@@ -14,6 +15,6 @@ defineProps<{
   <div>
     <WeatherByCity :getWeather="getWeather" />
     <WeatherInfo :weatherData="weatherData" />
-    <ChareLocationBtn :getWeather="getWeather" />
+    <ChareLocationBtn :getWeatherByLocation="getWeatherByLocation" />
   </div>
 </template>
