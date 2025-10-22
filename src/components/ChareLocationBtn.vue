@@ -1,12 +1,12 @@
 <script setup lang="ts">
-const { getWeatherByLocation } = defineProps<{
-  getWeatherByLocation: () => void
+const { setCityByLocation } = defineProps<{
+  setCityByLocation: () => void
 }>()
 </script>
 
 <template>
   <div class="search-button-wrap">
-    <button class="search-button" @click="getWeatherByLocation">🌍 Use my location</button>
+    <button class="search-button" @click="setCityByLocation">🌍 Use my location</button>
   </div>
 </template>
 

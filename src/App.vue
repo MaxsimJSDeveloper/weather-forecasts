@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { useWeather } from './composables/useWeather'
 import WeatherForecast from './components/WeatherForecast.vue'
 import WeatherNotFound from './components/WeatherNotFound.vue'
+import { useCity } from './composables/useCity'
+import { onMounted } from 'vue'
 
-const { weatherData, loading, error, notFound, getWeather, getWeatherByLocation } = useWeather()
+const { weatherData, loading, error, notFound, getWeather } = useWeather()
+const { city, setCityByLocation, setCityManually, initCity } = useCity()
 
 onMounted(() => {
-  getWeather('Kyiv')
+  initCity()
+  getWeather(city.value)
 })
 </script>
 
@@ -24,9 +27,9 @@ onMounted(() => {
     <WeatherNotFound v-else-if="notFound" @try-again="getWeather('Kyiv')" />
     <WeatherForecast
       v-else-if="weatherData"
-      :getWeather="getWeather"
+      :setCityManually="setCityManually"
       :weatherData="weatherData"
-      :getWeatherByLocation="getWeatherByLocation"
+      :setCityByLocation="setCityByLocation"
     />
   </main>
 </template>

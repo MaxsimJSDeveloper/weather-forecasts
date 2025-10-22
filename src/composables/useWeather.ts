@@ -1,9 +1,8 @@
 import { fetchWeather } from '@/api/fetchWeather'
 import type { WeatherData } from '@/types/weather'
-import { getCityByLocation } from '@/utils/getCityByLocation'
-import { getCoordinates } from '@/utils/getCoordinates'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useToast } from 'vue-toast-notification'
+import { useCity } from './useCity'
 
 export function useWeather() {
   const weatherData = ref<WeatherData | null>(null)
@@ -13,10 +12,10 @@ export function useWeather() {
 
   const toast = useToast()
 
+  const { city } = useCity()
+
   async function getWeather(city: string) {
-    if (!city.trim()) {
-      return
-    }
+    if (!city.trim()) return
 
     loading.value = true
     error.value = null
@@ -46,31 +45,9 @@ export function useWeather() {
     }
   }
 
-  async function getWeatherByLocation() {
-    loading.value = true
-    error.value = null
-    notFound.value = false
+  watch(city, (newCity) => {
+    getWeather(newCity)
+  })
 
-    try {
-      const coords = await getCoordinates()
-      if (!coords) {
-        toast.info('You denied access to your location.')
-        return
-      }
-      const city = await getCityByLocation(coords.lat, coords.lon)
-      await getWeather(city)
-    } catch (err) {
-      if (err instanceof GeolocationPositionError && err.code === 1) {
-        toast.info('You denied access to your location.')
-      } else if (err instanceof Error) {
-        toast.warning(err.message)
-      } else {
-        toast.error('An unknown error occurred during location detection.')
-      }
-    } finally {
-      loading.value = false
-    }
-  }
-
-  return { weatherData, loading, error, notFound, getWeather, getWeatherByLocation }
+  return { weatherData, loading, error, notFound, getWeather }
 }

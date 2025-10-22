@@ -5,16 +5,16 @@ import WeatherInfo from './WeatherInfo.vue'
 import ChareLocationBtn from './ChareLocationBtn.vue'
 
 defineProps<{
-  getWeather: (city: string) => Promise<void>
   weatherData: WeatherData
-  getWeatherByLocation: () => Promise<void>
+  setCityByLocation: () => Promise<void>
+  setCityManually: (city: string) => void
 }>()
 </script>
 
 <template>
   <div>
-    <WeatherByCity :getWeather="getWeather" />
+    <WeatherByCity :setCityManually="setCityManually" />
     <WeatherInfo :weatherData="weatherData" />
-    <ChareLocationBtn :getWeatherByLocation="getWeatherByLocation" />
+    <ChareLocationBtn :setCityByLocation="setCityByLocation" />
   </div>
 </template>

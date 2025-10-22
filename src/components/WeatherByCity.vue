@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 defineProps<{
-  getWeather: (city: string) => void
+  setCityManually: (city: string) => void
 }>()
 
 const city = ref('')
@@ -16,9 +16,9 @@ const city = ref('')
       v-model="city"
       placeholder="Enter city name"
       @input="city = city.replace(/[0-9]/g, '')"
-      @keyup.enter="getWeather(city)"
+      @keyup.enter="setCityManually(city)"
     />
-    <button class="search-button" @click="getWeather(city)">Search</button>
+    <button class="search-button" @click="setCityManually(city)">Search</button>
   </div>
 </template>
 
