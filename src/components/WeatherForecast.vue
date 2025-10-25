@@ -12,9 +12,7 @@ defineProps<{
 </script>
 
 <template>
-  <div>
-    <WeatherByCity :setCityManually="setCityManually" />
-    <WeatherInfo :weatherData="weatherData" />
-    <ChareLocationBtn :setCityByLocation="setCityByLocation" />
-  </div>
+  <WeatherByCity :setCityManually="setCityManually" />
+  <WeatherInfo :weatherData="weatherData" />
+  <ChareLocationBtn :setCityByLocation="setCityByLocation" />
 </template>

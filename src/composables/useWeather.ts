@@ -15,7 +15,7 @@ export function useWeather() {
   const { city } = useCity()
 
   async function getWeather(city: string) {
-    if (!city.trim()) return
+    if (!city) return
 
     loading.value = true
     error.value = null
@@ -25,6 +25,7 @@ export function useWeather() {
     try {
       const data = await fetchWeather(city)
       if (data.status === '404' || data.message?.includes('not found')) {
+        toast.error(`City not found`, { duration: 5000 })
         notFound.value = true
         return
       }

@@ -7,6 +7,7 @@
   --accent-color-hover: #36a473;
   --border-color: #e0e6ec;
   --shadow-color: rgba(0, 0, 0, 0.1);
+  --error-color: #d9534f;
 }
 
 body {

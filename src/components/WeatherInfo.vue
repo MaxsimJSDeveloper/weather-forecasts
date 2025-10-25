@@ -27,28 +27,27 @@ defineProps<{
 }
 
 .city-name {
-  font-size: 2.5rem;
+  font-size: 48px;
   font-weight: 600;
-  margin-bottom: 0.5rem;
 }
 
 .temperature-main {
-  font-size: 4rem;
+  font-size: 48px;
   font-weight: 700;
-  margin: 1rem 0;
+  margin-top: 10px;
   color: var(--primary-text-color);
 }
 
 .condition-description {
-  font-size: 1.25rem;
+  font-size: 20px;
   color: var(--secondary-text-color);
   text-transform: capitalize;
-  margin-top: -0.5rem;
+  margin-top: 10px;
 }
 
 .details {
   margin-top: 2rem;
-  font-size: 1.1rem;
+  font-size: 16px;
   color: var(--secondary-text-color);
 }
 

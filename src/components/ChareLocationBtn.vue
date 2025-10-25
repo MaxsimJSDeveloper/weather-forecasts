@@ -18,8 +18,7 @@ const { setCityByLocation } = defineProps<{
 
 .search-button {
   padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 16px;
   background-color: var(--accent-color);
   color: #fff;
   border: none;

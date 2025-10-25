@@ -1,40 +1,58 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { citySchema } from '@/validation/citySchema'
+import { useForm } from 'vee-validate'
 
-defineProps<{
+const props = defineProps<{
   setCityManually: (city: string) => void
 }>()
 
-const city = ref('')
+const { errors, meta, defineField, handleSubmit } = useForm({
+  validationSchema: citySchema,
+})
+
+const onSearch = handleSubmit((values) => {
+  props.setCityManually(values.city.trim())
+})
+
+const [city, cityAttrs] = defineField('city')
 </script>
 
 <template>
-  <div class="search-container">
-    <input
-      type="text"
-      class="search-input"
-      v-model="city"
-      placeholder="Enter city name"
-      @input="city = city.replace(/[0-9]/g, '')"
-      @keyup.enter="setCityManually(city)"
-    />
-    <button class="search-button" @click="setCityManually(city)">Search</button>
-  </div>
+  <form class="search-container" @submit="onSearch">
+    <div class="input-wrapper">
+      <input
+        type="text"
+        class="search-input"
+        :class="{ 'input-error': errors.city }"
+        v-model="city"
+        v-bind="cityAttrs"
+        placeholder="Enter city name"
+      />
+      <span v-if="errors.city" class="error-message">{{ errors.city }}</span>
+    </div>
+
+    <button class="search-button" :disabled="!meta.valid">Search</button>
+  </form>
 </template>
 
 <style scoped>
+.input-wrapper {
+  position: relative;
+  flex-grow: 1;
+}
+
 .search-container {
   display: flex;
-  margin-bottom: 2rem;
-  gap: 0.5rem;
+  margin-bottom: 24px;
+  gap: 8px;
 }
 
 .search-input {
   flex-grow: 1;
-  padding: 0.75rem 1rem;
-
+  padding: 12px 18px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
+  width: 90%;
   transition:
     border-color 0.3s,
     box-shadow 0.3s;
@@ -42,14 +60,23 @@ const city = ref('')
 
 .search-input:focus {
   outline: none;
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(66, 185, 131, 0.2);
+}
+
+.error-message {
+  color: var(--error-color);
+  position: absolute;
+  font-size: 12px;
+  bottom: -20px;
+  left: 0;
+}
+
+.search-input.input-error {
+  border-color: var(--error-color);
 }
 
 .search-button {
   padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 16px;
   background-color: var(--accent-color);
   color: #fff;
   border: none;
@@ -59,5 +86,9 @@ const city = ref('')
 
 .search-button:hover {
   background-color: var(--accent-color-hover);
+}
+
+.search-button:disabled {
+  cursor: not-allowed;
 }
 </style>
