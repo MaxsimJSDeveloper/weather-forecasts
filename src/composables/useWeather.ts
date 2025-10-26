@@ -8,7 +8,6 @@ export function useWeather() {
   const weatherData = ref<WeatherData | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
-  const notFound = ref(false)
 
   const toast = useToast()
 
@@ -19,14 +18,11 @@ export function useWeather() {
 
     loading.value = true
     error.value = null
-    weatherData.value = null
-    notFound.value = false
 
     try {
       const data = await fetchWeather(city)
       if (data.status === '404' || data.message?.includes('not found')) {
         toast.error(`City not found`, { duration: 5000 })
-        notFound.value = true
         return
       }
       weatherData.value = data
@@ -50,5 +46,5 @@ export function useWeather() {
     getWeather(newCity)
   })
 
-  return { weatherData, loading, error, notFound, getWeather }
+  return { weatherData, loading, error, getWeather }
 }

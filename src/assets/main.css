@@ -11,27 +11,10 @@
 }
 
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--primary-bg-color);
   color: var(--primary-text-color);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding-top: 50px;
-  font-size: 16px;
   font-weight: 400;
-  margin: 0;
-}
-
-#app {
-  width: 100%;
-  max-width: 500px;
-  background: var(--container-bg-color);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 10px 25px var(--shadow-color);
 }
 
 h1,

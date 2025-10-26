@@ -43,8 +43,10 @@ const [city, cityAttrs] = defineField('city')
 
 .search-container {
   display: flex;
+  justify-content: space-between;
   margin-bottom: 24px;
   gap: 8px;
+  width: 100%;
 }
 
 .search-input {
@@ -52,7 +54,7 @@ const [city, cityAttrs] = defineField('city')
   padding: 12px 18px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  width: 90%;
+  width: 85%;
   transition:
     border-color 0.3s,
     box-shadow 0.3s;
