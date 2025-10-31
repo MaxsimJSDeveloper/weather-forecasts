@@ -3,40 +3,61 @@ import { useWeather } from './composables/useWeather'
 import WeatherForecast from './components/WeatherForecast.vue'
 
 import { useCity } from './composables/useCity'
-import { onMounted } from 'vue'
-import Loader from './ui/Loader.vue'
+import { onMounted, ref } from 'vue'
+import BaseLoader from './ui/BaseLoader.vue'
+import IconWrapper from './shared/IconWrapper.vue'
+
+import iconSprite from '@/assets/symbol-defs.svg?raw'
 
 const { weatherData, loading, error, getWeather } = useWeather()
 const { city, setCityByLocation, setCityManually, initCity } = useCity()
+
+const isModalOpen = ref(false)
 
 onMounted(() => {
   initCity()
   getWeather(city.value)
 })
+
+const setModalOpen = () => {
+  isModalOpen.value = true
+}
 </script>
 
 <template>
+  <div v-html="iconSprite" style="display: none"></div>
   <main>
     <div class="container">
       <div v-if="loading">
-        <Loader />
+        <BaseLoader />
       </div>
 
       <div v-else-if="error">
         <h1>Error</h1>
         <p>{{ error }}</p>
       </div>
+      <section v-else-if="weatherData" class="weather-content">
+        <button class="setting-btn" @click="setModalOpen">
+          <IconWrapper id="setting"></IconWrapper>
+        </button>
 
-      <WeatherForecast
-        v-else-if="weatherData"
-        :setCityManually="setCityManually"
-        :weatherData="weatherData"
-        :setCityByLocation="setCityByLocation"
-      />
+        <WeatherForecast
+          :setCityManually="setCityManually"
+          :weatherData="weatherData"
+          :setCityByLocation="setCityByLocation"
+          :isModalOpen="isModalOpen"
+          @close="isModalOpen = false"
+        />
+      </section>
     </div>
   </main>
 </template>
 <style scoped>
+.weather-content {
+  display: flex;
+  flex-direction: column;
+}
+
 .container {
   margin-top: 40px;
   margin-left: auto;
@@ -47,5 +68,12 @@ onMounted(() => {
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 10px 25px var(--shadow-color);
+}
+
+.setting-btn {
+  border: none;
+  background-color: inherit;
+  margin-bottom: 16px;
+  margin-left: auto;
 }
 </style>
