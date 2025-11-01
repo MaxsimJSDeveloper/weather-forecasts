@@ -6,7 +6,7 @@ const { setCityByLocation } = defineProps<{
 
 <template>
   <div class="search-button-wrap">
-    <button class="search-button" @click="setCityByLocation">🌍 Use my location</button>
+    <button class="search-button" @click="setCityByLocation">Share location</button>
   </div>
 </template>
 

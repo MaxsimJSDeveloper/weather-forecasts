@@ -10,12 +10,11 @@ import IconWrapper from './shared/IconWrapper.vue'
 import iconSprite from '@/assets/symbol-defs.svg?raw'
 
 const { weatherData, loading, error, getWeather } = useWeather()
-const { city, setCityByLocation, setCityManually, initCity } = useCity()
+const { city, locationAllowed, setCityByLocation, setCityManually } = useCity()
 
 const isModalOpen = ref(false)
 
 onMounted(() => {
-  initCity()
   getWeather(city.value)
 })
 
@@ -36,6 +35,7 @@ const setModalOpen = () => {
         <h1>Error</h1>
         <p>{{ error }}</p>
       </div>
+
       <section v-else-if="weatherData" class="weather-content">
         <button class="setting-btn" @click="setModalOpen">
           <IconWrapper id="setting"></IconWrapper>
@@ -46,6 +46,7 @@ const setModalOpen = () => {
           :weatherData="weatherData"
           :setCityByLocation="setCityByLocation"
           :isModalOpen="isModalOpen"
+          :locationAllowed="locationAllowed"
           @close="isModalOpen = false"
         />
       </section>

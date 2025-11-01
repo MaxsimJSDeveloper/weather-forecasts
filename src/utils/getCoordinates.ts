@@ -4,12 +4,23 @@ export async function getCoordinates(): Promise<{ lat: number; lon: number } | n
     return null
   }
 
-  const position = await new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, reject)
-  })
+  try {
+    const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        timeout: 5000,
+      })
+    })
 
-  return {
-    lat: (position as GeolocationPosition).coords.latitude,
-    lon: (position as GeolocationPosition).coords.longitude,
+    return {
+      lat: position.coords.latitude,
+      lon: position.coords.longitude,
+    }
+  } catch (error) {
+    if (error instanceof GeolocationPositionError && error.code === 1) {
+      console.warn('User denied geolocation access.')
+    } else {
+      console.error('Error getting location:', error)
+    }
+    return null
   }
 }
