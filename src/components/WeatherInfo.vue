@@ -1,22 +1,48 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { WeatherData } from '@/types/weather'
+import { conversToFahrenheit } from '@/utils/conversToFahrenheit'
+import { useSettings } from '@/composables/useSettings'
 
-defineProps<{
+const props = defineProps<{
   weatherData: WeatherData
 }>()
+
+const { units } = useSettings()
+
+const displayTemperature = computed(() => {
+  const celsius = props.weatherData.temperature.current
+
+  if (units.value === 'imperial') {
+    return Math.round(conversToFahrenheit(celsius))
+  }
+  return Math.round(celsius)
+})
+
+const displayFeelsLike = computed(() => {
+  const celsius = props.weatherData.temperature.feels_like
+
+  if (units.value === 'imperial') {
+    return Math.round(conversToFahrenheit(celsius))
+  }
+  return Math.round(celsius)
+})
+
+const unitSymbol = computed(() => (units.value === 'metric' ? '°C' : '°F'))
 </script>
 
 <template>
   <div class="weather-info-container">
     <h1 class="city-name">{{ weatherData.city }}</h1>
 
-    <div class="temperature-main">{{ Math.round(weatherData.temperature.current) }}°C</div>
+    <div class="temperature-main">{{ displayTemperature }}{{ unitSymbol }}</div>
 
     <p class="condition-description">{{ weatherData.condition.description }}</p>
 
     <div class="details">
-      Feels like:
-      <p class="details-wrap">{{ Math.round(weatherData.temperature.feels_like) }}°C</p>
+      <p>
+        Feels like: <span>{{ displayFeelsLike }}{{ unitSymbol }}</span>
+      </p>
     </div>
   </div>
 </template>

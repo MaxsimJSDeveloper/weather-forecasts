@@ -31,8 +31,10 @@ const emit = defineEmits<{
   align-items: center;
 }
 .modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
+  background: var(--container-bg-color);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  min-width: 320px;
 }
 </style>

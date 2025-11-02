@@ -8,9 +8,11 @@ import BaseLoader from './ui/BaseLoader.vue'
 import IconWrapper from './shared/IconWrapper.vue'
 
 import iconSprite from '@/assets/symbol-defs.svg?raw'
+import { useSettings } from './composables/useSettings'
 
 const { weatherData, loading, error, getWeather } = useWeather()
-const { city, locationAllowed, setCityByLocation, setCityManually } = useCity()
+const { city, setCityByLocation, setCityManually } = useCity()
+const { locationAllowed } = useSettings()
 
 const isModalOpen = ref(false)
 

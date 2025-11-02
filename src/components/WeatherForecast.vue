@@ -2,8 +2,8 @@
 import type { WeatherData } from '@/types/weather'
 import WeatherByCity from './WeatherByCity.vue'
 import WeatherInfo from './WeatherInfo.vue'
-import ChareLocationBtn from './ChareLocationBtn.vue'
 import ModalWrapper from '@/shared/ModalWrapper.vue'
+import SettingModal from './SettingModal.vue'
 
 defineProps<{
   weatherData: WeatherData
@@ -22,19 +22,6 @@ const emit = defineEmits<{
   <WeatherByCity :setCityManually="setCityManually" />
   <WeatherInfo :weatherData="weatherData" />
   <ModalWrapper :isOpen="isModalOpen" @close="emit('close')">
-    <h2>Setting modal</h2>
-
-    <div class="setting-row">
-      <p v-if="locationAllowed">Geolocation access enabled</p>
-      <p v-else-if="!locationAllowed">
-        Geolocation access disabled. Click the button below to get the weather in your location.
-      </p>
-    </div>
-    <ChareLocationBtn :setCityByLocation="setCityByLocation" />
+    <SettingModal :locationAllowed="locationAllowed" :setCityByLocation="setCityByLocation" />
   </ModalWrapper>
 </template>
-<style scoped>
-.setting-row {
-  margin-top: 16px;
-}
-</style>

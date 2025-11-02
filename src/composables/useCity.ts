@@ -2,12 +2,13 @@ import { ref } from 'vue'
 import { getCityByLocation } from '@/utils/getCityByLocation'
 import { useToast } from 'vue-toast-notification'
 import { getCoordinates } from '@/utils/getCoordinates'
+import { useSettings } from './useSettings'
 
 const city = ref(localStorage.getItem('city') || 'Kyiv')
-const locationAllowed = ref(localStorage.getItem('isLocationAllowed') === 'true')
 
 export function useCity() {
   const toast = useToast()
+  const { setLocationPermission } = useSettings()
 
   function setCityManually(newCity: string) {
     if (newCity.trim()) {
@@ -21,14 +22,13 @@ export function useCity() {
     if (coords) {
       const locationCity = await getCityByLocation(coords.lat, coords.lon)
       city.value = locationCity
-      locationAllowed.value = true
+      setLocationPermission(true)
 
       localStorage.setItem('city', locationCity)
-      localStorage.setItem('isLocationAllowed', 'true')
+
       toast.info(`Your location is set to ${locationCity}`)
     } else {
-      locationAllowed.value = false
-      localStorage.setItem('isLocationAllowed', 'false')
+      setLocationPermission(false)
 
       toast.warning('Could not get location. User denied or error.')
     }
@@ -36,7 +36,6 @@ export function useCity() {
 
   return {
     city,
-    locationAllowed,
     setCityManually,
     setCityByLocation,
   }
