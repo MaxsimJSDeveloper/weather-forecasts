@@ -16,7 +16,7 @@ This project highlights a flexible and user-centric approach to fetching data:
 
 ## 🛠️ Technologies & Libraries
 
-Vue 3, Vite, TypeScript, Axios, VeeValidate, Yup, epic-spinners, vue-toast-notification.
+Vue 3, TypeScript
 
 ## 🚀 Project Setup
 
