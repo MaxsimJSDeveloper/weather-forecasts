@@ -5,7 +5,6 @@ import WeatherForecast from './components/WeatherForecast.vue'
 import { useCity } from './composables/useCity'
 import { onMounted, ref } from 'vue'
 import BaseLoader from './ui/BaseLoader.vue'
-import IconWrapper from './shared/IconWrapper.vue'
 
 import iconSprite from '@/assets/symbol-defs.svg?raw'
 import { useSettings } from './composables/useSettings'
@@ -39,10 +38,6 @@ const setModalOpen = () => {
       </div>
 
       <section v-else-if="weatherData" class="weather-content">
-        <button class="setting-btn" @click="setModalOpen">
-          <IconWrapper id="setting"></IconWrapper>
-        </button>
-
         <WeatherForecast
           :setCityManually="setCityManually"
           :weatherData="weatherData"
@@ -50,6 +45,7 @@ const setModalOpen = () => {
           :isModalOpen="isModalOpen"
           :locationAllowed="locationAllowed"
           @close="isModalOpen = false"
+          :setModalOpen="setModalOpen"
         />
       </section>
     </div>
