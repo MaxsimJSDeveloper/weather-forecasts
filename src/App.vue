@@ -12,12 +12,14 @@ import AppWrapper from './shared/AppWrapper.vue'
 import ApiError from './shared/ApiError.vue'
 
 const { weatherData, loading, error, getWeather } = useWeather()
-const { city, setCityByLocation, setCityManually } = useCity()
+const { city, permissionState, setCityByLocation, setCityManually, checkBrowserPermissions } =
+  useCity()
 const { locationAllowed } = useSettings()
 
 const isModalOpen = ref(false)
 
-onMounted(() => {
+onMounted(async () => {
+  await checkBrowserPermissions()
   getWeather(city.value)
 })
 
@@ -36,6 +38,7 @@ const setModalOpen = () => {
 
       <WeatherForecast
         v-else-if="weatherData"
+        :permissionState="permissionState"
         :setCityManually="setCityManually"
         :weatherData="weatherData"
         :setCityByLocation="setCityByLocation"

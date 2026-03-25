@@ -4,6 +4,7 @@ import ChareLocationBtn from './ChareLocationBtn.vue'
 
 defineProps<{
   locationAllowed: boolean
+  permissionState: PermissionState | 'loading'
   setCityByLocation: () => Promise<void>
 }>()
 
@@ -17,14 +18,22 @@ const { units } = useSettings()
     <div class="settings-group">
       <h3 class="settings-group-title">Geolocation</h3>
       <div class="setting-row">
-        <p class="setting-row-text" v-if="locationAllowed">
-          Geolocation access enabled. Your default city will update automatically.
-        </p>
-        <p class="setting-row-text" v-else>
-          Geolocation access disabled. Click the button to get weather for your location.
-        </p>
+        <template v-if="permissionState === 'denied'">
+          <p class="setting-row-text error-text">
+            Location access is blocked in your browser settings. Please enable it in the address bar
+            to use this feature.
+          </p>
+        </template>
+
+        <template v-else-if="permissionState === 'granted'">
+          <p class="setting-row-text">
+            Geolocation is active. Click below to refresh your current position.
+          </p>
+          <ChareLocationBtn :setCityByLocation="setCityByLocation"
+            >Refresh location</ChareLocationBtn
+          >
+        </template>
       </div>
-      <ChareLocationBtn :setCityByLocation="setCityByLocation" />
     </div>
 
     <hr class="divider" />

@@ -5,5 +5,5 @@ export const WEATHER_API = {
 }
 
 export const GEOCODING_API = {
-  key: 'eb264fe8940f4a338a016b06b9e5eeba',
+  key: 'b44dcf78933c4823b2eb2dd060a6f01a',
 }
