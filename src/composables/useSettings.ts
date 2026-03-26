@@ -1,22 +1,13 @@
 import type { Units } from '@/types/units'
 import { ref, watch } from 'vue'
+import { storage } from '@/utils/storage'
 
-const locationAllowed = ref(localStorage.getItem('isLocationAllowed') === 'true')
-const units = ref<Units>((localStorage.getItem('units') as Units) || 'metric')
+const units = ref<Units>(storage.get<Units>('units', 'metric'))
 
 export function useSettings() {
-  function setLocationPermission(isAllowed: boolean) {
-    locationAllowed.value = isAllowed
-    localStorage.setItem('isLocationAllowed', isAllowed ? 'true' : 'false')
-  }
-
   watch(units, (newUnits) => {
-    localStorage.setItem('units', newUnits)
+    storage.set('units', newUnits)
   })
 
-  return {
-    locationAllowed,
-    units,
-    setLocationPermission,
-  }
+  return { units }
 }

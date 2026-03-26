@@ -1,50 +1,39 @@
 import { fetchWeather } from '@/api/fetchWeather'
 import type { WeatherData } from '@/types/weather'
 import { ref, watch } from 'vue'
-import { useToast } from 'vue-toast-notification'
 import { useCity } from './useCity'
+import { notify } from '@/utils/notify'
 
 export function useWeather() {
   const weatherData = ref<WeatherData | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
-
-  const toast = useToast()
-
   const { city } = useCity()
 
-  async function getWeather(city: string) {
-    if (!city) return
-
+  async function getWeather(cityName: string) {
+    if (!cityName) return
     loading.value = true
     error.value = null
 
     try {
-      const data = await fetchWeather(city)
-      if (data.status === '404' || data.message?.includes('not found')) {
-        toast.error(`City not found`, { duration: 5000 })
-        return
-      }
-      weatherData.value = data
+      const data = await fetchWeather(cityName)
 
-      toast.success(`Weather data for ${city} loaded successfully!`, { duration: 3000 })
-    } catch (err) {
-      if (err instanceof Error) {
-        error.value = err.message
-        toast.error(`Error: ${err.message}`, { duration: 5000 })
-      } else {
-        error.value = 'Unknown error occurred'
-        toast.error('An unknown error occurred.', { duration: 5000 })
+      if (data.status === '404' || data.message?.includes('not found')) {
+        throw new Error('City not found')
       }
-      console.error(err)
+
+      weatherData.value = data
+      notify.success(`Weather for ${cityName} updated`)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to load weather'
+      error.value = message
+      notify.error(message)
     } finally {
       loading.value = false
     }
   }
 
-  watch(city, (newCity) => {
-    getWeather(newCity)
-  })
+  watch(city, (newCity) => getWeather(newCity))
 
   return { weatherData, loading, error, getWeather }
 }

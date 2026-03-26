@@ -9,7 +9,6 @@ import IconWrapper from '@/shared/IconWrapper.vue'
 defineProps<{
   weatherData: WeatherData
   isModalOpen: boolean
-  locationAllowed: boolean
   permissionState: PermissionState | 'loading'
   setCityByLocation: () => Promise<void>
   setCityManually: (city: string) => void
@@ -31,11 +30,7 @@ const emit = defineEmits<{
   </div>
   <WeatherInfo :weatherData="weatherData" />
   <ModalWrapper :isOpen="isModalOpen" @close="emit('close')">
-    <SettingModal
-      :locationAllowed="locationAllowed"
-      :permissionState="permissionState"
-      :setCityByLocation="setCityByLocation"
-    />
+    <SettingModal :permissionState="permissionState" :setCityByLocation="setCityByLocation" />
   </ModalWrapper>
 </template>
 <style scoped>

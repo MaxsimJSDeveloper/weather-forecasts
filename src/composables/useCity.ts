@@ -1,76 +1,60 @@
 import { ref } from 'vue'
+import { storage } from '@/utils/storage'
+import { geo } from '@/utils/geolocation'
 import { getCityByLocation } from '@/utils/getCityByLocation'
-import { useToast } from 'vue-toast-notification'
-import { getCoordinates } from '@/utils/getCoordinates'
-import { useSettings } from './useSettings'
+import { notify } from '@/utils/notify'
 
-const city = ref(localStorage.getItem('city') || 'Kyiv')
+const city = ref(storage.get<string>('city', 'Kyiv'))
 const permissionState = ref<PermissionState | 'loading'>('loading')
 
 export function useCity() {
-  const toast = useToast()
-  const { setLocationPermission } = useSettings()
-
-  function setCityManually(newCity: string) {
-    if (newCity.trim()) {
-      city.value = newCity
-    }
+  const updateCity = (name: string) => {
+    if (!name.trim()) return
+    city.value = name
+    storage.set('city', name)
   }
 
-  function resetToDefault() {
-    city.value = 'Kyiv'
-    localStorage.setItem('city', 'Kyiv')
-    setLocationPermission(false)
-  }
+  const resetToDefault = () => updateCity('Kyiv')
 
   async function setCityByLocation(isSilent = false) {
-    const coords = await getCoordinates()
+    const coords = await geo.getCoords()
 
-    if (coords) {
-      const locationCity = await getCityByLocation(coords.lat, coords.lon)
-
-      if (city.value !== locationCity && !isSilent) {
-        toast.info(`Location updated: ${locationCity}`)
-      } else if (!isSilent) {
-        toast.success(`You are already in ${locationCity}`)
-      }
-
-      city.value = locationCity
-      localStorage.setItem('city', locationCity)
-      setLocationPermission(true)
-    } else {
+    if (!coords) {
       resetToDefault()
-      if (!isSilent) toast.error('Location access denied. Resetting to Kyiv.')
+      if (!isSilent) notify.error('Location access denied. Resetting to Kyiv.')
+      return
+    }
+
+    const locationCity = await getCityByLocation(coords.lat, coords.lon)
+
+    if (locationCity) {
+      if (city.value !== locationCity && !isSilent) {
+        notify.info(`Location updated: ${locationCity}`)
+      }
+      updateCity(locationCity)
     }
   }
 
-  async function checkBrowserPermissions() {
-    if (!navigator.permissions) return
+  async function initGeoSync() {
+    return new Promise<void>((resolve) => {
+      geo.watchPermission((newState) => {
+        permissionState.value = newState
 
-    try {
-      const status = await navigator.permissions.query({ name: 'geolocation' })
-      permissionState.value = status.state
-
-      if (status.state === 'granted') {
-        await setCityByLocation(true)
-      } else if (status.state === 'denied') {
-        resetToDefault()
-      }
-
-      status.onchange = () => {
-        permissionState.value = status.state
-        if (status.state === 'denied') resetToDefault()
-      }
-    } catch (e) {
-      console.error('Permissions API error:', e)
-    }
+        if (newState === 'granted') {
+          setCityByLocation(true).finally(() => resolve())
+        } else {
+          if (newState === 'denied') resetToDefault()
+          resolve()
+        }
+      })
+    })
   }
 
   return {
     city,
     permissionState,
-    setCityManually,
+    setCityManually: (name: string) => updateCity(name),
     setCityByLocation,
-    checkBrowserPermissions,
+    initGeoSync,
   }
 }

@@ -7,20 +7,17 @@ import { onMounted, ref } from 'vue'
 import BaseLoader from './ui/BaseLoader.vue'
 
 import iconSprite from '@/assets/symbol-defs.svg?raw'
-import { useSettings } from './composables/useSettings'
 import AppWrapper from './shared/AppWrapper.vue'
 import ApiError from './shared/ApiError.vue'
 
 const { weatherData, loading, error, getWeather } = useWeather()
-const { city, permissionState, setCityByLocation, setCityManually, checkBrowserPermissions } =
-  useCity()
-const { locationAllowed } = useSettings()
+const { city, permissionState, setCityByLocation, setCityManually, initGeoSync } = useCity()
 
 const isModalOpen = ref(false)
 
 onMounted(async () => {
-  await checkBrowserPermissions()
-  getWeather(city.value)
+  await initGeoSync()
+  await getWeather(city.value)
 })
 
 const setModalOpen = () => {
@@ -43,7 +40,6 @@ const setModalOpen = () => {
         :weatherData="weatherData"
         :setCityByLocation="setCityByLocation"
         :isModalOpen="isModalOpen"
-        :locationAllowed="locationAllowed"
         @close="isModalOpen = false"
         :setModalOpen="setModalOpen"
       />

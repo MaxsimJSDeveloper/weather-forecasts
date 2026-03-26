@@ -3,7 +3,6 @@ import { useSettings } from '@/composables/useSettings'
 import ChareLocationBtn from './ChareLocationBtn.vue'
 
 defineProps<{
-  locationAllowed: boolean
   permissionState: PermissionState | 'loading'
   setCityByLocation: () => Promise<void>
 }>()
