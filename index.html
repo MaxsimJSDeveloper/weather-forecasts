@@ -1,13 +1,44 @@
 <!doctype html>
-<html lang="">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather forecasts</title>
+
+    <title>SkyCast | Real-time Weather Forecasts</title>
+    <meta
+      name="description"
+      content="Check accurate weather forecasts for any city worldwide with SkyCast. Real-time updates and smart geolocation detection."
+    />
+    <meta name="keywords" content="weather, forecast, weather app, geolocation weather, SkyCast" />
+    <meta name="author" content="MaxsimJSDeveloper" />
+    <meta name="robots" content="index, follow" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SkyCast | Weather Forecasts" />
+    <meta
+      property="og:description"
+      content="Get real-time weather updates based on your current location. Fast, accurate, and clean."
+    />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://your-vercel-link.vercel.app/" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SkyCast Weather" />
+    <meta name="twitter:description" content="Real-time weather at your fingertips." />
+
+    <meta name="theme-color" content="#42b983" />
   </head>
   <body>
-    <div id="app"></div>
+    <noscript>
+      <strong
+        >We're sorry but SkyCast doesn't work properly without JavaScript enabled. Please enable it
+        to continue.</strong
+      >
+    </noscript>
+
+    <div id="app" role="application" aria-live="polite"></div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
